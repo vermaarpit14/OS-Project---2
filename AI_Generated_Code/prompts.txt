@@ -1,0 +1,191 @@
+
+  ----------------------------------
+  PROMPT 1
+  ----------------------------------
+   Matrix Setup & Cramer's
+   To solve a system with $N=1000+$ using Cramer's Rule, you need to calculate $N+1$ determinants. Use Gaussian Elimination ($O(n^3)$) because recursive methods are too slow.
+
+// Forward Elimination to Upper Triangular
+for (int i = 0; i < n; i++) {
+    for (int j = i + 1; j < n; j++) {
+        double f = matrix[j][i] / matrix[i][i];
+        for (int k = i + 1; k < n; k++) 
+            matrix[j][k] -= f * matrix[i][k];
+    }
+    det *= matrix[i][i];
+}
+
+
+  ----------------------------------
+  PROMPT 2
+  ----------------------------------
+Parallelizing with fork()
+Split the N determinant calculations across child processes. Each child handles one D calculation.
+
+
+for (int i = 0; i < workers; i++) {
+    if (fork() == 0) {
+        get_determinant(n, A_copy);
+        exit(0); // Child must exit
+    }
+}
+for (int i = 0; i < workers; i++) wait(NULL);
+
+  ----------------------------------
+  PROMPT 3
+  ----------------------------------
+Unique Logging
+Create a new file for every run using timestamps in Shell.
+
+
+TIMESTAMP=$(date "+%Y%m%d_%H%M%S")
+LOG_FILE="AI_Outputs/log_$TIMESTAMP.txt"
+./matrix_benchmark 2000 4 > "$LOG_FILE"
+
+
+  ----------------------------------
+  PROMPT 4
+  ----------------------------------
+Memory Management
+Large matrices (2000×2000) exceed stack limits. Always use malloc for the heap.
+
+
+double **A = malloc(n * sizeof(double *));
+for(int i=0; i<n; i++) 
+    A[i] = malloc(n * sizeof(double));
+
+
+
+  ----------------------------------
+  PROMPT 5
+  ----------------------------------
+Benchmarking Metadata
+Capture hardware and user info to track performance across different machines.
+
+
+USER_NAME=$(whoami)
+CPU_INFO=$(lscpu | grep "Model name")
+echo "Hardware: $CPU_INFO" >> "$LOG_FILE"
+
+
+
+  ----------------------------------
+  PROMPT 6
+  ----------------------------------
+Signal Handling
+Ensure children don't become zombies if the parent is killed (Ctrl+C).
+
+
+void handle_sigint(int sig) {
+    kill(0, SIGKILL); // Kill process group
+    exit(1);
+}
+
+
+  ----------------------------------
+  PROMPT 7
+  ----------------------------------
+Timing
+Use CLOCK_MONOTONIC for high-precision benchmarking in C.
+
+
+struct timespec start, end;
+clock_gettime(CLOCK_MONOTONIC, &start);
+// ... code ...
+clock_gettime(CLOCK_MONOTONIC, &end);
+double time_taken = (end.tv_sec - start.tv_sec) + 
+                    (end.tv_nsec - start.tv_nsec) / 1e9;
+
+
+
+  ----------------------------------
+  PROMPT 8
+  ----------------------------------
+Output Scannability
+Use fflush(stdout) and clear dividers to make logs readable at a glance.
+
+
+printf("Running Parallel Mode...\n");
+fflush(stdout);
+
+
+
+  ----------------------------------
+  PROMPT 9
+  ----------------------------------
+Dynamic Directory
+Ensure the script doesn't fail if the folder is missing. Use -p to create parents and skip errors if it already exists.Bashmkdir -p AI_Outputs
+
+
+
+  ----------------------------------
+  PROMPT 10
+  ----------------------------------
+Matrix Copying (Cramer's)
+Since Cramer's Rule requires replacing one column of the matrix $A$ with vector $B$, you must clone the matrix for every determinant calculation to avoid corrupting the original.C// Using memcpy for row-by-row high-speed copying
+for (int i = 0; i < n; i++) {
+    memcpy(temp[i], matrix[i], n * sizeof(double));
+}
+
+
+
+  ----------------------------------
+  PROMPT 11
+  ----------------------------------
+  The "Fork" Logic Error
+  If you see the output repeating "Running Parallel Mode..." incorrectly, it's because the child process is not exiting. Every child must call exit(0).Cpid_t pid = fork();
+if (pid == 0) {
+    // child work here
+    exit(0); // CRITICAL: Stop the child from continuing the loop!
+}
+
+
+  ----------------------------------
+  PROMPT 12
+  ----------------------------------
+Precision Benchmarking
+For scientific results, use %f with defined decimal places (like %.5f) to ensure the log is easy to parse for graphing.Cprintf("Parallel Time: %.5f seconds\n", par_time);
+
+
+
+  ----------------------------------
+  PROMPT 13
+  ----------------------------------
+Buffer Flushing
+When redirecting output to a file (> log.txt), standard output is buffered. If the program crashes, you lose the logs. Use fflush to force the write.Cprintf("Starting Matrix Init...");
+fflush(stdout);
+
+
+
+  ----------------------------------
+  PROMPT 14
+  ----------------------------------
+Gaussian Pivot
+To avoid "Division by Zero" errors in large matrices, you must swap rows to find the largest "pivot" element.Cif (abs(matrix[j][i]) > abs(matrix[pivot][i])) 
+    pivot = j;
+// Swap rows pivot and i
+
+
+
+  ----------------------------------
+  PROMPT 15
+  ----------------------------------
+ Clean Cleanup
+ A $2000 * 2000$ matrix uses significant RAM. Always free nested pointers in reverse order.Cfor (int i = 0; i < n; i++) free(A[i]);
+free(A);
+
+
+
+  ----------------------------------
+  PROMPT 16
+  ----------------------------------
+Optimization Flags
+Standard gcc is slow for matrix math. Use the -O3 flag to enable vectorization and loop unrolling.Bashgcc -O3 matrix.c -o matrix_benchmark
+
+
+
+
+
+"I need to create a C program called 'matrix_solver' that computes the determinant of a large matrix and solves a system of linear equations using Cramer’s Rule. The size of the matrix 'n' (which should be >1000) and the number of child processes 'w' should be passed as command-line arguments.I need to use malloc() and free() for dynamic memory allocation of the 2D coefficient matrices and 1D constant vectors, and use srand() and random() to populate them with values.please include a Shell script that automates the execution, creates a directory called 'AI_Outputs', and saves a unique, timestamped 'log.txt' for every run."
+
+This is the prompt I gave to AI while working on this project, to generate a reference code.
