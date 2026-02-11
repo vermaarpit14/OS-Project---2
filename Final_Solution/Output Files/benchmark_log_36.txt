@@ -1,0 +1,19 @@
+------------------------------------------------
+User:     anjali_1234
+Date:     2026-02-10 19:45:44
+Hardware: AMD Ryzen 5 7535HS with Radeon Graphics
+Command:  ./matrix_benchmark 2000 4
+Results:
+Initializing Matrix: 2000x2000 | Workers: 4
+Running Sequential Mode...
+Sequential Time: 26.54854 seconds
+Running Parallel Mode...
+Running Parallel Mode...
+Running Parallel Mode...
+Running Parallel Mode...
+Running Parallel Mode...
+Parallel Time:   13.09735 seconds
+
+------------------------------------------------
+
+
