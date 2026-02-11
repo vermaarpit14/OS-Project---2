@@ -61,7 +61,7 @@ This performs the following steps:
 Compile the program:
 
 ``` bash
-gcc -O2 matrix_ops.c -o matrix_benchmark
+gcc -O2 ai_fast_calculation.c -o matrix_benchmark
 ```
 
 Run with arguments:
