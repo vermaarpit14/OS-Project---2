@@ -1,17 +1,26 @@
 ------------------------------------------------
 User:     arpit
-Date:     2026-02-10 19:21:08
+Date:     2026-02-19 09:28:38
 Hardware: 12th Gen Intel(R) Core(TM) i5-12450H
 Command:  ./matrix_benchmark 2000 4
 Results:
-Initializing Matrix: 2000x2000 | Workers: 4
+Initializing System of 2000 Equations | Workers: 4
+Sequential Time: Skipped (Size > 100)
+------------------------------------------------
+User:     arpit
+Date:     2026-02-19 09:34:04
+Hardware: 12th Gen Intel(R) Core(TM) i5-12450H
+Command:  ./matrix_benchmark 2000 4
+Results:
+------------------------------------------------
+User:     arpit
+Date:     2026-02-19 09:35:48
+Hardware: 12th Gen Intel(R) Core(TM) i5-12450H
+Command:  ./matrix_benchmark 2000 4
+Results:
 Running Sequential Mode...
-Sequential Time: 23.99414 seconds
+Sequential Time: 3.12352 seconds
 Running Parallel Mode...
-Running Parallel Mode...
-Running Parallel Mode...
-Running Parallel Mode...
-Running Parallel Mode...
-Parallel Time:   6.76232 seconds
+Parallel Time:   0.96462 seconds
 
 ------------------------------------------------

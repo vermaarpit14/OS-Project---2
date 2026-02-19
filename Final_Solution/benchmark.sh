@@ -2,7 +2,7 @@
 
 LOG_FILE="benchmark_log.txt"
 EXEC_NAME="matrix_benchmark"
-SRC_FILE="fast_mul.c"
+SRC_FILE="fast_solve.c"
 
 if [ ! -f "$SRC_FILE" ]; then
     echo "Error: Source file '$SRC_FILE' not found."
